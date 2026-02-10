@@ -6,24 +6,24 @@
 
 @theme {
   /* === Colors === */
-  --color-primary: #121212;
+  --color-primary: #cb3438;
   --color-body: #fff;
-  --color-border: #eaeaea;
-  --color-light: #f6f6f6;
-  --color-dark: #040404;
-  --color-text: #444444;
-  --color-text-dark: #040404;
-  --color-text-light: #717171;
+  --color-border: #e0dede;
+  --color-light: #faf5f5;
+  --color-dark: #2e2e30;
+  --color-text: #5c5e60;
+  --color-text-dark: #2e2e30;
+  --color-text-light: #8a8c8e;
 
   /* === Darkmode Colors === */
-  --color-darkmode-primary: #fff;
-  --color-darkmode-body: #1c1c1c;
-  --color-darkmode-border: #3E3E3E;
-  --color-darkmode-light: #222222;
-  --color-darkmode-dark: #fff;
-  --color-darkmode-text: #B4AFB6;
-  --color-darkmode-text-dark: #fff;
-  --color-darkmode-text-light: #B4AFB6;
+  --color-darkmode-primary: #e05a5e;
+  --color-darkmode-body: #1a1a1c;
+  --color-darkmode-border: #3a3a3c;
+  --color-darkmode-light: #242426;
+  --color-darkmode-dark: #f0f0f0;
+  --color-darkmode-text: #b8b6ba;
+  --color-darkmode-text-dark: #f0f0f0;
+  --color-darkmode-text-light: #9a989c;
 
   /* === Font Families === */
   --font-primary: Heebo, sans-serif;
