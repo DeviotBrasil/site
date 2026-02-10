@@ -24,7 +24,7 @@ defaultContentLanguageInSubdir = false
 ID = 'G-MEASUREMENT_ID' # see https://gohugo.io/templates/internal/#configure-google-analytics
 
 [services.disqus]
-shortname = 'disqus_o5Ti4BNIPG' # Disqus comments
+shortname = 'deviot-com-br' # Disqus comments
 
 ########################## Permalinks ############################
 [permalinks.page]
