@@ -1,20 +1,18 @@
 ---
-title: "Hey, I am John Doe!"
+title: "Olá, eu sou o PC!"
 meta_title: "About"
 description: "this is meta description"
-image: "/images/image-placeholder.png"
+image: "/images/about.png"
 layout: "about"
 draft: false
 ---
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at.
+Sou formado em Sistemas de Informação, com 15 anos de experiência em desenvolvimento de sistemas. Natural de Marília, iniciei minha carreira na automação industrial, com foco no desenvolvimento de soluções para automação de máquinas. Posteriormente, mudei-me para São Paulo, onde ingressei em uma multinacional e me apaixonei pela empresa e pela cidade.
 
-### This is a title
+Ao longo da minha trajetória, tive a oportunidade de colaborar com grandes empresas como JBS, Magalu e Itaú, aplicando meu conhecimento para implementar soluções tecnológicas inovadoras e de alto impacto.
 
-* Lorem ipsum, dolor sit amet
-* Enim voluptatem dicta expedita veritatis
-* Fugit voluptatibus perspiciatis assumenda
-* Enim voluptatem dicta expedita
-* Corporis illum nesciunt commodi vel
+Tenho uma paixão particular por IoT (Internet das Coisas), e compartilho minhas experiências e aprendizados sobre o tema em meu canal no YouTube, onde compartilho vídeos e insights sobre essa área.
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at.
+Sempre em busca de novos desafios, atualmente, estou me aprofundando no universo de Machine Learning e IA Generativa.
+
+{{< youtube 2DS8XsZRcHc >}}

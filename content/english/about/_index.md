@@ -1,20 +1,18 @@
 ---
-title: "Hey, I am John Doe!"
+title: "Hey, I'm PC!"
 meta_title: "About"
-description: "this is meta description"
-image: "/images/image-placeholder.png"
+description: "About Paulo Cesar de Souza - Deviot Brasil"
+image: "/images/about.png"
 layout: "about"
 draft: false
 ---
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at.
+I hold a degree in Information Systems, with 15 years of experience in systems development. Originally from Marília, I started my career in industrial automation, focusing on developing solutions for machine automation. Later, I moved to São Paulo, where I joined a multinational company and fell in love with both the company and the city.
 
-### This is a title
+Throughout my career, I've had the opportunity to collaborate with major companies such as JBS, Magalu, and Itaú, applying my knowledge to implement innovative and high-impact technology solutions.
 
-* Lorem ipsum, dolor sit amet
-* Enim voluptatem dicta expedita veritatis
-* Fugit voluptatibus perspiciatis assumenda
-* Enim voluptatem dicta expedita
-* Corporis illum nesciunt commodi vel
+I have a particular passion for IoT (Internet of Things), and I share my experiences and learnings on the subject through my YouTube channel, where I post videos and insights about this field.
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at.
+Always seeking new challenges, I am currently diving deeper into the world of Machine Learning and Generative AI.
+
+{{< youtube 2DS8XsZRcHc >}}

@@ -1,12 +1,12 @@
 ---
 enable: true
-title: "Ready to build your next project with Hugo?"
+title: "Ready to explore the world of IoT and AI?"
 image: "/images/call-to-action.png"
-description: "Experience the future of web development with Hugoplate and Hugo. Build lightning-fast static sites with ease and flexibility."
+description: "Subscribe to our channel and stay up to date with the latest on Internet of Things, Artificial Intelligence, Arduino, ESP32 and much more. New videos every week!"
 button:
   enable: true
-  label: "Fork Deploy and Edit Online 🚀"
-  link: "https://app.sitepins.com/new/clone?name=Hugoplate&repository=https://github.com/zeon-studio/hugoplate/"
+  label: "Subscribe to the Channel 🚀"
+  link: "https://www.youtube.com/@DeviotBrasil"
 
 # don't create a separate page
 build:

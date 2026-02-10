@@ -1,12 +1,12 @@
 ---
 enable: true
-title: "Ready to build your next project with Hugo?"
+title: "Pronto para explorar o mundo da IoT e IA?"
 image: "/images/call-to-action.png"
-description: "Experience the future of web development with Hugoplate and Hugo. Build lightning-fast static sites with ease and flexibility."
+description: "Inscreva-se no nosso canal e fique por dentro das novidades sobre Internet das Coisas, Inteligência Artificial, Arduino, ESP32 e muito mais. Novos vídeos toda semana!"
 button:
   enable: true
-  label: "Fork Deploy and Edit Online 🚀"
-  link: "https://app.sitepins.com/new/clone?name=Hugoplate&repository=https://github.com/zeon-studio/hugoplate/"
+  label: "Inscreva-se no Canal 🚀"
+  link: "https://www.youtube.com/@DeviotBrasil"
 
 # don't create a separate page
 build:
