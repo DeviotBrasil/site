@@ -6,7 +6,7 @@
     <div class="container">
       <div class="row">
         <div class="md:col-10 lg:col-6 mx-auto">
-          <form action="{{ site.Params.contact_form_action }}" method="POST">
+          <form id="contact-form" action="https://airform.io/paulo.souza@deviot.com.br" method="POST" novalidate>
             <div class="mb-6">
               <label for="name" class="form-label">
                 {{ if eq site.Language.Lang "pt-br" }}Nome Completo{{ else }}Full Name{{ end }} <span class="text-red-500">*</span>
@@ -16,7 +16,12 @@
                 name="name"
                 class="form-input"
                 placeholder="{{ if eq site.Language.Lang "pt-br" }}Seu nome{{ else }}John Doe{{ end }}"
-                type="text" />
+                type="text"
+                required
+                minlength="3" />
+              <p class="text-red-500 text-sm mt-1 hidden" id="name-error">
+                {{ if eq site.Language.Lang "pt-br" }}Por favor, insira seu nome (mínimo 3 caracteres).{{ else }}Please enter your name (minimum 3 characters).{{ end }}
+              </p>
             </div>
             <div class="mb-6">
               <label for="email" class="form-label">
@@ -27,7 +32,11 @@
                 name="email"
                 class="form-input"
                 placeholder="{{ if eq site.Language.Lang "pt-br" }}seu@email.com{{ else }}john.doe@email.com{{ end }}"
-                type="email" />
+                type="email"
+                required />
+              <p class="text-red-500 text-sm mt-1 hidden" id="email-error">
+                {{ if eq site.Language.Lang "pt-br" }}Por favor, insira um e-mail válido.{{ else }}Please enter a valid email address.{{ end }}
+              </p>
             </div>
             <div class="mb-6">
               <label for="message" class="form-label">
@@ -38,14 +47,86 @@
                 name="message"
                 class="form-input"
                 placeholder="{{ if eq site.Language.Lang "pt-br" }}Escreva sua mensagem aqui...{{ else }}Message goes here...{{ end }}"
-                rows="8"></textarea>
+                rows="8"
+                required
+                minlength="10"></textarea>
+              <p class="text-red-500 text-sm mt-1 hidden" id="message-error">
+                {{ if eq site.Language.Lang "pt-br" }}Por favor, escreva sua mensagem (mínimo 10 caracteres).{{ else }}Please write your message (minimum 10 characters).{{ end }}
+              </p>
             </div>
-            <button type="submit" class="btn btn-primary">{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}</button>
+            <button type="submit" id="submit-btn" class="btn btn-primary">{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}</button>
+            <p class="text-green-500 text-sm mt-3 hidden" id="success-msg">
+              {{ if eq site.Language.Lang "pt-br" }}Mensagem enviada com sucesso! Entraremos em contato em breve.{{ else }}Message sent successfully! We'll get back to you soon.{{ end }}
+            </p>
           </form>
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('contact-form');
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const messageInput = document.getElementById('message');
+      const nameError = document.getElementById('name-error');
+      const emailError = document.getElementById('email-error');
+      const messageError = document.getElementById('message-error');
+      const successMsg = document.getElementById('success-msg');
+      const submitBtn = document.getElementById('submit-btn');
+
+      function validateField(input, errorEl, validationFn) {
+        if (!validationFn(input.value.trim())) {
+          errorEl.classList.remove('hidden');
+          input.classList.add('border-red-500');
+          return false;
+        }
+        errorEl.classList.add('hidden');
+        input.classList.remove('border-red-500');
+        return true;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      nameInput.addEventListener('blur', function() {
+        validateField(nameInput, nameError, v => v.length >= 3);
+      });
+      emailInput.addEventListener('blur', function() {
+        validateField(emailInput, emailError, v => emailRegex.test(v));
+      });
+      messageInput.addEventListener('blur', function() {
+        validateField(messageInput, messageError, v => v.length >= 10);
+      });
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const isNameValid = validateField(nameInput, nameError, v => v.length >= 3);
+        const isEmailValid = validateField(emailInput, emailError, v => emailRegex.test(v));
+        const isMessageValid = validateField(messageInput, messageError, v => v.length >= 10);
+
+        if (isNameValid && isEmailValid && isMessageValid) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviando...{{ else }}Sending...{{ end }}';
+
+          fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+          })
+          .then(function() {
+            successMsg.classList.remove('hidden');
+            form.reset();
+            submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
+            submitBtn.disabled = false;
+          })
+          .catch(function() {
+            submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
+            submitBtn.disabled = false;
+          });
+        }
+      });
+    });
+  </script>
 
   <!-- google map -->
   {{ with site.Params.google_map }}
