@@ -98,7 +98,7 @@
                   {{ range .Params.testimonials }}
                     <div class="swiper-slide">
                       <div
-                        class="bg-light dark:bg-darkmode-light rounded-lg px-7 py-10">
+                        class="bg-light dark:bg-darkmode-light rounded-lg px-7 py-10 h-full flex flex-col">
                         <div class="text-text-dark dark:text-white">
                           <svg
                             width="33"
@@ -111,7 +111,7 @@
                               fill="currentColor" />
                           </svg>
                         </div>
-                        <blockquote class="mt-8">
+                        <blockquote class="mt-8 flex-grow">
                           {{ .content | markdownify }}
                         </blockquote>
                         <div class="mt-11 flex items-center">

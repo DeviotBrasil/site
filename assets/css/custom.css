@@ -45,3 +45,18 @@
 .dark .content :not(pre) > code {
   @apply text-darkmode-text-dark bg-darkmode-light;
 }
+
+/* Testimonial slider - cards com mesma altura */
+.testimonial-slider .swiper-wrapper {
+  align-items: stretch;
+}
+
+.testimonial-slider .swiper-slide {
+  height: auto;
+}
+
+/* Blog listing - cards com mesma altura e botão alinhado embaixo */
+.blog-list .row > [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
