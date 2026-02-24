@@ -19,3 +19,29 @@
   max-height: 32px;
   width: auto;
 }
+
+/* Blocos de código - melhor visibilidade no tema light */
+.content pre {
+  @apply bg-[#1e1e2e] text-[#cdd6f4];
+}
+
+.content pre code {
+  @apply text-[#cdd6f4];
+}
+
+.content :not(pre) > code {
+  @apply text-text-dark bg-light px-1.5 py-0.5 rounded text-sm font-semibold;
+}
+
+/* Tema dark - manter consistência */
+.dark .content pre {
+  @apply bg-darkmode-light text-darkmode-text-dark;
+}
+
+.dark .content pre code {
+  @apply text-darkmode-text-dark;
+}
+
+.dark .content :not(pre) > code {
+  @apply text-darkmode-text-dark bg-darkmode-light;
+}
