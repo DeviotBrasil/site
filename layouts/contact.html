@@ -172,6 +172,10 @@
           submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviando...{{ else }}Sending...{{ end }}';
 
           const formData = new FormData(form);
+          // Remove campos do hCaptcha — a validação é feita client-side.
+          // O Formspree rejeita (400) se receber tokens de captcha que não reconhece.
+          formData.delete('h-captcha-response');
+          formData.delete('g-recaptcha-response');
 
           fetch(form.action, {
             method: 'POST',
