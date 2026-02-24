@@ -6,7 +6,8 @@
     <div class="container">
       <div class="row">
         <div class="md:col-10 lg:col-6 mx-auto">
-          <form id="contact-form" action="https://airform.io/paulo.souza@deviot.com.br" method="POST" novalidate>
+          <iframe name="airform-frame" id="airform-frame" style="display:none;"></iframe>
+          <form id="contact-form" action="https://airform.io/paulo.souza@deviot.com.br" method="POST" target="airform-frame" novalidate>
             <div class="mb-6">
               <label for="name" class="form-label">
                 {{ if eq site.Language.Lang "pt-br" }}Nome Completo{{ else }}Full Name{{ end }} <span class="text-red-500">*</span>
@@ -103,50 +104,40 @@
         validateField(messageInput, messageError, v => v.length >= 10);
       });
 
+      // Submissão nativa do formulário via iframe oculto (sem CORS).
+      // O form tem target="airform-frame", então o POST nativo do navegador
+      // envia os dados para o Airform e a resposta vai para o iframe invisível.
+      // Assim a página não redireciona e não há bloqueio de CORS.
+      const airformFrame = document.getElementById('airform-frame');
+      let formSubmitted = false;
+
       form.addEventListener('submit', function(e) {
-        e.preventDefault();
         const isNameValid = validateField(nameInput, nameError, v => v.length >= 3);
         const isEmailValid = validateField(emailInput, emailError, v => emailRegex.test(v));
         const isMessageValid = validateField(messageInput, messageError, v => v.length >= 10);
 
-        if (isNameValid && isEmailValid && isMessageValid) {
-          submitBtn.disabled = true;
-          successMsg.classList.add('hidden');
-          errorMsg.classList.add('hidden');
-          submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviando...{{ else }}Sending...{{ end }}';
-
-          const formData = new FormData(form);
-          const urlEncoded = new URLSearchParams(formData).toString();
-
-          fetch(form.action, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Accept': 'application/json',
-            },
-            body: urlEncoded,
-          })
-          .then(function(response) {
-            if (!response.ok) {
-              throw new Error('Erro HTTP: ' + response.status);
-            }
-            return response;
-          })
-          .then(function() {
-            successMsg.classList.remove('hidden');
-            errorMsg.classList.add('hidden');
-            form.reset();
-            submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
-            submitBtn.disabled = false;
-          })
-          .catch(function(err) {
-            console.error('Erro no envio do formulário:', err);
-            errorMsg.classList.remove('hidden');
-            successMsg.classList.add('hidden');
-            submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
-            submitBtn.disabled = false;
-          });
+        if (!isNameValid || !isEmailValid || !isMessageValid) {
+          e.preventDefault();
+          return;
         }
+
+        // Validação OK — deixa o formulário submeter nativamente para o iframe
+        formSubmitted = true;
+        submitBtn.disabled = true;
+        successMsg.classList.add('hidden');
+        errorMsg.classList.add('hidden');
+        submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviando...{{ else }}Sending...{{ end }}';
+      });
+
+      // Quando o iframe carrega a resposta do Airform, sabemos que o envio foi concluído
+      airformFrame.addEventListener('load', function() {
+        if (!formSubmitted) return;
+        formSubmitted = false;
+        successMsg.classList.remove('hidden');
+        errorMsg.classList.add('hidden');
+        form.reset();
+        submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
+        submitBtn.disabled = false;
       });
     });
   </script>
