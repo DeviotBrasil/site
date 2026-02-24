@@ -6,8 +6,7 @@
     <div class="container">
       <div class="row">
         <div class="md:col-10 lg:col-6 mx-auto">
-          <iframe name="airform-frame" id="airform-frame" style="display:none;"></iframe>
-          <form id="contact-form" action="https://airform.io/paulo.souza@deviot.com.br" method="POST" target="airform-frame" novalidate>
+          <form id="contact-form" action="https://formspree.io/f/meelpwkn" method="POST" novalidate>
             <div class="mb-6">
               <label for="name" class="form-label">
                 {{ if eq site.Language.Lang "pt-br" }}Nome Completo{{ else }}Full Name{{ end }} <span class="text-red-500">*</span>
@@ -55,6 +54,12 @@
                 {{ if eq site.Language.Lang "pt-br" }}Por favor, escreva sua mensagem (mínimo 10 caracteres).{{ else }}Please write your message (minimum 10 characters).{{ end }}
               </p>
             </div>
+            <div class="mb-6">
+              <div id="hcaptcha-container"></div>
+              <p class="text-red-500 text-sm mt-1 hidden" id="captcha-error">
+                {{ if eq site.Language.Lang "pt-br" }}Por favor, complete a verificação de segurança.{{ else }}Please complete the security verification.{{ end }}
+              </p>
+            </div>
             <button type="submit" id="submit-btn" class="btn btn-primary">{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}</button>
             <p class="text-green-500 text-sm mt-3 hidden" id="success-msg">
               {{ if eq site.Language.Lang "pt-br" }}Mensagem enviada com sucesso! Entraremos em contato em breve.{{ else }}Message sent successfully! We'll get back to you soon.{{ end }}
@@ -70,6 +75,46 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // --- hCaptcha: renderização explícita com suporte a tema dark/light ---
+      var HCAPTCHA_SITEKEY = '6b8a2a0c-1652-4b8c-b7e6-527c799e060a';
+      var hcaptchaContainer = document.getElementById('hcaptcha-container');
+      var hcaptchaWidgetId = null;
+
+      function getCurrentTheme() {
+        return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      }
+
+      function renderHcaptcha() {
+        if (hcaptchaWidgetId !== null) {
+          hcaptcha.reset(hcaptchaWidgetId);
+          hcaptcha.remove(hcaptchaWidgetId);
+          hcaptchaContainer.innerHTML = '';
+        }
+        hcaptchaWidgetId = hcaptcha.render(hcaptchaContainer, {
+          sitekey: HCAPTCHA_SITEKEY,
+          theme: getCurrentTheme(),
+        });
+      }
+
+      function waitForHcaptcha() {
+        if (typeof hcaptcha !== 'undefined') {
+          renderHcaptcha();
+        } else {
+          setTimeout(waitForHcaptcha, 100);
+        }
+      }
+      waitForHcaptcha();
+
+      // Observa mudanças de tema (classe 'dark' no <html>) e re-renderiza o hCaptcha
+      new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'class' && typeof hcaptcha !== 'undefined') {
+            renderHcaptcha();
+          }
+        });
+      }).observe(document.documentElement, { attributes: true });
+
+      // --- Formulário de contato ---
       const form = document.getElementById('contact-form');
       const nameInput = document.getElementById('name');
       const emailInput = document.getElementById('email');
@@ -79,6 +124,7 @@
       const messageError = document.getElementById('message-error');
       const successMsg = document.getElementById('success-msg');
       const errorMsg = document.getElementById('error-msg');
+      const captchaError = document.getElementById('captcha-error');
       const submitBtn = document.getElementById('submit-btn');
 
       function validateField(input, errorEl, validationFn) {
@@ -104,43 +150,66 @@
         validateField(messageInput, messageError, v => v.length >= 10);
       });
 
-      // Submissão nativa do formulário via iframe oculto (sem CORS).
-      // O form tem target="airform-frame", então o POST nativo do navegador
-      // envia os dados para o Airform e a resposta vai para o iframe invisível.
-      // Assim a página não redireciona e não há bloqueio de CORS.
-      const airformFrame = document.getElementById('airform-frame');
-      let formSubmitted = false;
-
       form.addEventListener('submit', function(e) {
+        e.preventDefault();
         const isNameValid = validateField(nameInput, nameError, v => v.length >= 3);
         const isEmailValid = validateField(emailInput, emailError, v => emailRegex.test(v));
         const isMessageValid = validateField(messageInput, messageError, v => v.length >= 10);
 
-        if (!isNameValid || !isEmailValid || !isMessageValid) {
-          e.preventDefault();
-          return;
+        // Validar hCaptcha
+        const hcaptchaResponse = document.querySelector('[name="h-captcha-response"]');
+        const isCaptchaValid = hcaptchaResponse && hcaptchaResponse.value !== '';
+        if (!isCaptchaValid) {
+          captchaError.classList.remove('hidden');
+        } else {
+          captchaError.classList.add('hidden');
         }
 
-        // Validação OK — deixa o formulário submeter nativamente para o iframe
-        formSubmitted = true;
-        submitBtn.disabled = true;
-        successMsg.classList.add('hidden');
-        errorMsg.classList.add('hidden');
-        submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviando...{{ else }}Sending...{{ end }}';
-      });
+        if (isNameValid && isEmailValid && isMessageValid && isCaptchaValid) {
+          submitBtn.disabled = true;
+          successMsg.classList.add('hidden');
+          errorMsg.classList.add('hidden');
+          submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviando...{{ else }}Sending...{{ end }}';
 
-      // Quando o iframe carrega a resposta do Airform, sabemos que o envio foi concluído
-      airformFrame.addEventListener('load', function() {
-        if (!formSubmitted) return;
-        formSubmitted = false;
-        successMsg.classList.remove('hidden');
-        errorMsg.classList.add('hidden');
-        form.reset();
-        submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
-        submitBtn.disabled = false;
+          const formData = new FormData(form);
+
+          fetch(form.action, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+            },
+            body: formData,
+          })
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error('Erro HTTP: ' + response.status);
+            }
+            return response.json();
+          })
+          .then(function(data) {
+            if (data.ok) {
+              successMsg.classList.remove('hidden');
+              errorMsg.classList.add('hidden');
+              form.reset();
+              if (hcaptchaWidgetId !== null) hcaptcha.reset(hcaptchaWidgetId);
+            } else {
+              throw new Error('Formspree retornou erro');
+            }
+            submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
+            submitBtn.disabled = false;
+          })
+          .catch(function(err) {
+            console.error('Erro no envio do formulário:', err);
+            errorMsg.classList.remove('hidden');
+            successMsg.classList.add('hidden');
+            submitBtn.textContent = '{{ if eq site.Language.Lang "pt-br" }}Enviar{{ else }}Submit{{ end }}';
+            submitBtn.disabled = false;
+          });
+        }
       });
     });
   </script>
+  <script src="https://js.hcaptcha.com/1/api.js?render=explicit" async defer></script>
 
   <!-- google map -->
   {{ with site.Params.google_map }}
